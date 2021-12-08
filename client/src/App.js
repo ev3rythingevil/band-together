@@ -1,8 +1,11 @@
-
+import { Routes, Route} from 'react-router-dom'
 import './App.css';
 import { useState , useEffect} from 'react';
-import Nav from './components/Nav';
+import Navbar from './components/Navbar';
 import Auth from './components/Auth';
+import Main from './components/Main';
+import UserProfile from './components/UserProfile';
+import Matches from './components/Matches';
 
 
 function App() {
@@ -10,7 +13,7 @@ function App() {
   // states
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState([])
-console.log(user)
+  const [convos, setConvos] = useState([])
   // effects
   useEffect(()=> {
     fetch('/me')
@@ -24,8 +27,31 @@ console.log(user)
     });
   }, []
   );
+  useEffect(()=> {
+    fetch('/conversations')
+    .then(res => res.json())
+    .then(data => {
+      setConvos(data)
+    })
+  }, [])
 
   // functions
+ 
+  function matchUp(match){
+    console.log(match)
+    fetch('/follows' , {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(match)
+    })
+    .then(r => r.json())
+    .then(data => {
+      setUser(data)
+      window.location.reload(false);
+    })
+  }
 
   function newUser(data){
     fetch("/users", {
@@ -82,17 +108,23 @@ console.log(user)
 
   return(
     <>
-    <Nav loggedIn={loggedIn}/>
+    <Navbar loggedIn={loggedIn}/>
     <Auth  logIn={logIn} newUser={newUser}/>
     </>
   )
   
   else 
   return (
-    <div className="App">
-      <Nav logOut={logOut} loggedIn={loggedIn}/>
-    <h1>Ayyy lmao</h1>
-    </div>
+    
+    <Routes>
+    <Route path='/' element={<Navbar logOut={logOut} loggedIn={loggedIn}/>}>
+      <Route index element={<Main user={user} matchUp={matchUp}/>} />
+      <Route path="UserProfile" element={<UserProfile user={user} setUser={setUser}/>} />
+      <Route path="Matches" element={<Matches user={user} convos={convos} />} />
+      </Route>
+    </Routes>
+   
+    
   );
 }
 

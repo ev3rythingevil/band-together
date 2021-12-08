@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   
 
   resources :users
-  resources :follows, only: [:create]
+  resources :follows, only: [:create, :index]
+  resources :conversations, only: [:index]
+  resources :messages, only: [:create]
 
   #auth routes
   post "/signup", to: "users#create"

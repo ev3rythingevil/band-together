@@ -1,4 +1,6 @@
 import { useState } from "react"
+import Form from 'react-bootstrap/Form'
+
 
 function Login({logIn}){
     
@@ -12,7 +14,7 @@ function Login({logIn}){
             [e.target.name]:e.target.value
         }
         )
-        console.log(loginData)
+ 
     }
     function sendUserData(e){
         e.preventDefault()
@@ -20,12 +22,12 @@ function Login({logIn}){
     }
     return(
         <>
-        <form onSubmit={e => sendUserData(e)}>
-            <input type='text' name="username" onChange={e => userData(e)} placeholder='username'/>
-            <input type='password' name="password" onChange={e => userData(e)} placeholder='password'/>
-            <input type='submit'/>
-        </form>
-        <h1>Login</h1>
+        <Form onSubmit={e => sendUserData(e)}>
+        <Form.Label>Login</Form.Label>
+            <Form.Control className="m-2 2 2 2 p-2 2 2 2 " type='text' name="username"placeholder="Username" onChange={e => userData(e)} placeholder='username'/>
+            <Form.Control className="m-2 2 2 2 p-2 2 2 2 " type='password' name="password" placeholder="Password" onChange={e => userData(e)} placeholder='password'/>
+            <Form.Control className="btn btn-primary m-2 2 2 2" type='submit'/>
+        </Form>
         </>
     )
 }

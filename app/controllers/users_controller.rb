@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
     
     def index
-        users = User.all
-        render json: users
+        user = User.find(session[:user_id])
+        render json: user.open_user
     end
 
     def show 
@@ -36,6 +36,6 @@ class UsersController < ApplicationController
     end
     private
     def user_params
-        params.permit(:username, :password, :password_confirmation, :firstName, :lastName, :email, :images, :instruments, :influences, :bio)
+        params.permit(:username, :password, :password_confirmation, :firstName, :lastName, :email, :images, :instruments, :influences, :bio, :song_url, :longitude, :latitude)
     end
 end

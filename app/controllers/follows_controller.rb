@@ -1,16 +1,26 @@
 class FollowsController < ApplicationController
 
-    # for adding followers, we will send up a user_id from the card of the user that the session user wishes to follow,
-    # and then shovel it in like so: user_id.followers << session_user
+    def index
+        user = User.find_by(id: session[:user_id])
+        render json: user.matches
+    end
+    
     def create
-        user = User.find(session[:user_id])
+        user = User.find_by(id: session[:user_id])
         followee = User.find_by(username: params[:username])
         if followee && user
             followee.followers << user
-            render json: followee.followers, status: :created
+            # check if match is mutual
+            if user.followers.include?(followee)
+            # create conversation
+                @conversation = Conversation.get(session[:user_id], params[:id])
+            end
+            render json: user, status: :created
         else 
             render json: { error: "User not found" }, status: :not_found
         end
     end
+
+    
 
 end

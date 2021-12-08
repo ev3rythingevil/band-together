@@ -1,6 +1,7 @@
 import Signup from "./Signup"
 import Login from "./Login"
 import { useState } from "react"
+import Button from 'react-bootstrap/Button'
 
 function Auth({logIn,newUser}){
     const [login, setLogin] = useState(false)
@@ -17,9 +18,9 @@ function Auth({logIn,newUser}){
 
     return(
         <>
-        <h1> Auth Page</h1>
-        {login? <><Login logIn={logIn}/> <button type="button" onClick={showLogin}>Collapse</button> </> : <button type="button" onClick={showLogin}>Log In</button>}
-        {signup? <> <Signup newUser={newUser}/> <button type='button'onClick={showSignup}>Collapse</button> </> : <button type='button'onClick={showSignup}>Sign Up</button>}
+        <h1>BandTogether: Log in or Sign Up!</h1>
+        {login? <><Login className="btn btn-primary m-2 2 2 2" logIn={logIn}/> <Button type="Button" className="btn btn-primary m-2 2 2 2" onClick={showLogin}>Collapse</Button> </> : <Button className="btn btn-primary m-2 2 2 2" type="Button" onClick={showLogin}>Log In</Button>}
+        {signup? <> <Signup className="btn btn-primary m-2 2 2 2" newUser={newUser}/> <Button type='Button' className="btn btn-primary m-2 2 2 2" onClick={showSignup}>Collapse</Button> </> : <Button className="btn btn-primary m-2 2 2 2" type='Button'onClick={showSignup}>Sign Up</Button>}
 
         </>
     )
