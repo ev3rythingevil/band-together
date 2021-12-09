@@ -3,6 +3,7 @@ import {Container, Row, Col, Form} from 'react-bootstrap'
 
 function MatchList({ c, user}){
     
+    const [messages , setMessages] = useState(c.messages)
     const [showChat, setShowChat] = useState(false)
     const [formData, setFormData] = useState({
         "user_id":`${user.id}`,
@@ -14,16 +15,17 @@ function MatchList({ c, user}){
        setFormData({
            ...formData,
            [e.target.name]:e.target.value
-       })
+       })    
    }
    
     function chat(){
         setShowChat(!showChat)
-        console.log(c)
+    
     }
 
     function sendMessage(e){
         e.preventDefault()
+        e.target.reset()
         fetch('/messages', {
             method: "POST",
             headers: {
@@ -33,7 +35,7 @@ function MatchList({ c, user}){
         })
         .then(r => r.json())
         .then(data => {
-            setShowChat(!showChat)
+            setMessages([...messages, data])
             
         })
     } 
@@ -45,8 +47,8 @@ function MatchList({ c, user}){
         
         {showChat?
          <div>
-         {c.messages.map(message => <p>{<h4>{message.user_name}</h4> }{message.body}</p>)}
-         <Form onSubmit={e=>sendMessage(e)}>
+         {messages.map(message => <p>{<h4>{message.user_name}</h4> }{message.body}</p>)}
+         <Form id='messageForm'onSubmit={e=>sendMessage(e)}>
          <Form.Control className="m-2 2 2 2 p-2 2 2 2 " type="text" name="body" onChange={e=> formSet(e)} />
          <Form.Control className="btn btn-primary " type='submit'/>
 
